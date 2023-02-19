@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Enquete {{question.id}}{% endblock title %}
+{% block content %}
+<div class="row">
+    <h1>{{ question }}</h1>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <form action="{% url 'polls:vote' question.id %}" method="post">
+            {% csrf_token %}
+            <fieldset>
+                {% if error_message %}
+                <p><strong>{{error_message}}</strong></p>
+                {% endif %}
+                {% for choice in question.choice_set.all %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-text">
+                            <input type="radio" name="choice" id="choice_{{choice.id}}" class="form-check-input mt-0" value="{{choice.id}}">
+                        </div>
+                        <label for="choice_{{choice.id}}" class="form-control">{{choice}}</label>
+                    </div>
+                {% endfor %}
+            </fieldset>
+            <button type="submit" class="btn btn-primary form-control">Votar</button>
+        </form>
+    </div>
+</div>
+    
+{% endblock content %}
